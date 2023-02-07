@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Examinator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
+  </head>
+  <body class="bg-dark">
+    <nav class="navbar bg-mid mb-3">
+      <div class="container-fluid d-flex justify-content-center navbar-inner">
+        <p class="navbar-inner-element">1</p>
+        <a href="{{ url_for('root') }}" class="navbar-brand mb-0 h1 fg-light navbar-inner-element me-0">Examinator</a>
+        <button class="btn p-0 mt-1 fg-light navbar-inner-element" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+          <i class="bi bi-list fs-3"></i>
+        </button>
+      </div>
+    </nav>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        {% if user %}
+          <p class="strong mb-0">You are currently logged in as {{ user.username }}.</p>
+          <a href="{{ url_for('new_test') }}">
+            <button class="btn btn-mid mt-3 w-100">New Test</button>
+          </a>
+          <a href="{{ url_for('logout') }}">
+            <button class="btn btn-mid mt-2 w-100">Logout</button>
+          </a>
+        {% else %}
+        <p class="strong mb-0">You need to login before accessing website.</p>
+        {% endif %}
+      </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+       {% if messages %}
+        <div class="alert-wrapper">
+          {% for category, message in messages %}
+             <div class="alert alert-{{ category }} flash-alert ms-3 me-3" role="alert">
+                {{ message }}
+             </div>
+          {% endfor %}
+        </div>
+       {% endif %}
+    {% endwith %}
+    <div class="container main">
+      {% block content %}{% endblock content %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card p-3 pt-5 pb-5">
+    <div class="error-body mb-3">
+        <h3 class="h3">Error {{ error.code }}</h3>
+        <h5 class="mb-2 fg-mid">{{ error.description }}</h5>
+        {% if error.code == 403 %}
+            <p class="strong mb-0">Looks like you don't have enough rights to access this page.</p>
+            <p class="strong mb-0">if this error occurred when trying to open a private test using a link,</p>
+            <p class="strong mb-0">then contact the test author to get a new link.</p>
+        {% elif error.code == 404 %}
+            <p class="strong mb-1">Looks like the page you are trying to access does not exist.</p>
+            <p class="strong mb-0">Try to check URL or go back.</p>
+        {% endif %}
+    </div>
+    <div class="d-flex justify-content-center">
+        <a href="{{ url_for('root') }}" class="btn bg-primary-light fg-light w-70">Take Me Home!</a>
+    </div>
+</div>
+{% endblock %}

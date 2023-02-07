@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid card p-3 centered-form">
+    <h5 class="h5">Login</h5>
+   <form method="POST" action="">
+      <div class="mb-2">
+        {{ form.username.label(class="form-label") }}
+        {% if form.username.errors %}
+            {{ form.username(class="form-control form-control-md is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.username.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.username(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+      <div class="mb-2">
+        {{ form.password.label(class="form-label") }}
+        {% if form.password.errors %}
+            {{ form.password(class="form-control form-control-md is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.password(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+      <div class="mb-3">
+        {{ form.remember(class="form-check-input checkbox") }}
+        {{ form.remember.label(class="form-check-label") }}
+      </div>
+      <div>
+        {{ form.submit(class="btn bg-primary-light fg-light me-2") }}
+        <a href="{{ url_for('register') }}" class="text-muted">Register</a>
+      </div>
+   </form>
+</div>
+{% endblock %}

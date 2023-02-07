@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card p-3 mb-3">
+    <div class="d-flex display-row align-items-center">
+        <h5 class="h5 me-3 mb-1">{{ test.title }}</h5>
+        {% if test.is_public %}
+            <p class="text-muted mb-0">Public</p>
+        {% else %}
+            <p class="text-muted mb-0">Private</p>
+        {% endif %}
+    </div>
+    <p class="strong mb-0">{{ test.description }}</p>
+    <div class="mt-2 form-check">
+        <input type="checkbox" class="form-check-input" id="onlyMarkedCheckbox">
+        <label class="form-check-label" for="onlyMarkedCheckbox">Marked Questions Only</label>
+    </div>
+    <div class="mb-2 form-check">
+        <input type="checkbox" class="form-check-input" id="shuffleCheckbox">
+        <label class="form-check-label" for="shuffleCheckbox">Shuffle Questions</label>
+    </div>
+    <label class="form-check-label mb-2" for="perPage">Amount Of Questions Per Card</label>
+    <select class="form-control form-control-md" id="perPage">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option selected value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+    {% if test.questions %}
+    <a href="{{ url_for('run_test', test_id=test.id) }}" class="btn bg-primary-light fg-light mb-3 mt-3" id="startLink">Start</a>
+    {% for question in test.questions %}
+        {% if loop.first %}
+        <div class="form-control p-2 ps-3 pe-3 mt-0">
+        {% else %}
+        <div class="form-control p-2 ps-3 pe-3 mt-1">
+        {% endif %}
+            <div class="question-inner">
+                <a href="{{ url_for('edit_question', question_id=question.id) }}" class="question-title">{{ question.text }}</a>
+                <div class="li-question ms-2">
+                    <button class="btn fg-mid p-0 me-2" type="button" onclick="markQuestion({{ question.id }});">
+                        {% if question.is_marked %}
+                            <i class="bi bi-star-fill marked-button"></i>
+                        {% else %}
+                            <i class="bi bi-star marked-button"></i>
+                        {% endif %}
+                    </button>
+                    <button class="btn fg-mid p-0" type="button" data-bs-toggle="collapse" data-bs-target="#questionComment{{ question.id }}" aria-expanded="false" aria-controls="questionComment{{ question.id }}">
+                        <i class="bi bi-caret-down-square-fill collapse-button"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="collapse" id="questionComment{{ question.id }}">
+              <div class="mt-3 mb-1 pt-2 li-question-comment">
+                {% if question.comment %}
+                    {{ question.comment }}
+                {% else %}
+                    Looks empty in here...
+                {% endif %}
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<script>
+const shuffleCheckbox = document.getElementById("shuffleCheckbox")
+const startLink = document.getElementById("startLink")
+const markedCheckbox = document.getElementById("onlyMarkedCheckbox")
+const perPageDropdown = document.getElementById("perPage")
+startLink.addEventListener("click", (event) => {
+    const onlyMarked = markedCheckbox.checked ? 1: 0
+    if (shuffleCheckbox.checked) {
+        startLink.href = "{{ url_for('shuffle_questions', test_id=test.id, only_marked='MARKED', per_page='PER_PAGE') }}".replace("MARKED", onlyMarked).replace("amp;", "").replace("PER_PAGE", perPageDropdown.value)
+    } else {
+        startLink.href = "{{ url_for('run_test', test_id=test.id, only_marked='MARKED', per_page='PER_PAGE') }}".replace("MARKED", onlyMarked).replace("amp;", "").replace("PER_PAGE", perPageDropdown.value)
+    }
+})
+</script>
+{% endblock %}

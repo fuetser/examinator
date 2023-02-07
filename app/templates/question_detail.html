@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid card p-3">
+    <h5 class="h5">Edit Question</h5>
+   <form method="POST" action="">
+      <div class="mb-2">
+        {{ form.text.label(class="form-label") }}
+        {% if form.text.errors %}
+            {{ form.text(class="form-control form-control-md form-input is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.text.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.text(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+      <div class="mb-2">
+        {{ form.comment.label(class="form-label") }}
+        {{ form.comment(class="form-control form-control-md") }}
+      </div>
+      <div class="mb-3">
+        {{ form.is_marked(class="form-check-input checkbox") }}
+        {{ form.is_marked.label(class="form-check-label ms-1") }}
+      </div>
+       {{ form.submit(class="btn bg-primary-light fg-light me-2") }}
+       <button type="button" class="btn btn-mid" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        Delete
+        </button>
+   </form>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete the question?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-2 pb-2">
+        This question will be permanently deleted. Are you sure you want to continue?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="deleteButton" data-bs-dismiss="modal" onclick="deleteQuestion({{ question_id }})">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}

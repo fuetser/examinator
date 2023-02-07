@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card p-3">
+    <div class="sort-wrapper mb-3">
+        <p class="strong mb-0 sort-wrapper-label">Sort By</p>
+        <select class="form-control form-control-md" id="sortBy">
+            {% if order == "dateNewFirst" %}
+                <option selected value="dateNewFirst">Date (Newest first)</option>
+            {% else %}
+                <option value="dateNewFirst">Date (Newest first)</option>
+            {% endif %}
+            {% if order == "dateOldFirst" %}
+                <option selected value="dateOldFirst">Date (Oldest firts)</option>
+            {% else %}
+                <option value="dateOldFirst">Date (Oldest firts)</option>
+            {% endif %}
+            {% if order == "titleAZ" %}
+                <option selected value="titleAZ">Title (A-Z)</option>
+            {% else %}
+                <option value="titleAZ">Title (A-Z)</option>
+            {% endif %}
+            {% if order == "titleZA" %}
+                <option selected value="titleZA">Title (Z-A)</option>
+            {% else %}
+                <option value="titleZA">Title (Z-A)</option>
+            {% endif %}
+        </select>
+    </div>
+    <ul class="list-group b-none">
+    {% for test in tests %}
+      <li class="list-group-item list-item">
+        <a class="h5" href="{{ url_for('test_detail', test_id=test.id) }}">{{ test.title }}</a>
+      </li>
+    {% endfor %}
+    </ul>
+</div>
+<script>
+    const sortByDropdown = document.getElementById("sortBy")
+    sortByDropdown.addEventListener("change", e => {
+        window.location = "{{ url_for('root', order='ORDER') }}".replace("ORDER", sortByDropdown.value)
+    })
+</script>
+{% endblock %}

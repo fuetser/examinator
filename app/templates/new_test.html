@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid card p-3">
+    <h5 class="h5">New Test</h5>
+   <form method="POST" action="">
+      <div class="mb-2">
+        {{ form.title.label(class="form-label") }}
+        {% if form.title.errors %}
+            {{ form.title(class="form-control form-control-md form-input is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.title(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+      <div class="mb-2">
+        {{ form.description.label(class="form-label") }}
+        {{ form.description(class="form-control form-control-md") }}
+      </div>
+      <div class="mb-2">
+        {{ form.questions.label(class="form-label") }}
+        {% if form.questions.errors %}
+            {{ form.questions(class="form-control form-control-md form-input is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.questions.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.questions(class="form-control form-control-md") }}
+        {% endif %}
+      </div>
+      <div class="mb-3">
+          {{ form.public.label(class="form-label") }}
+          {{ form.public(class="form-control form-control-md") }}
+      </div>
+       {{ form.submit(class="btn bg-primary-light fg-light") }}
+   </form>
+</div>
+{% endblock %}
